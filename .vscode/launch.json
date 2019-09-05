@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "cwd":"${workspaceFolder}",
-            "runtimeExecutable": "/Users/user/.nvm/versions/node/v10.15.3/bin/node",
+            "runtimeExecutable": "~/.nvm/versions/node/v10.15.3/bin/node",
             "program": "${workspaceFolder}/parse.js",
             "console": "integratedTerminal"
         }

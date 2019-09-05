@@ -1,13 +1,47 @@
-var exec = require('child_process').exec;
-class V4l2{
-    _exec(cmd) {
-
-
+var exec = require('child_process').execSync;
+class DEV{
+    constructor(){
+        this.formats = [];
 
     }
+}
+
+/**
+ * [
+ *  {name:name
+ *    [
+ * 
+ *     ]
+ * 
+ * 
+ *  },
+ *  
+ * 
+ * ] 
+ */
+ 
+
+const V4L2 = "v4l2-ctl";
+class V4l2{
+     _exec(cmd) {
+        let r = exec(cmd);
+        console.log(r.toString());
+        return  r.toString();
+    }
     getinfo(){
-
-
+        let usb_txt = this._exec(`${V4L2} --list-devices`);
+        let usbs = this.listUSB(usb_txt);
+        for(let i=0;i<usbs.list;i++) {
+            let usb = usbs[i];
+            for(let j=0;j<usb.devices.length;j++){
+                let dev = usb.devices[j];
+                let format_txt= this._exec(`${V4L2} --list-formats-ext ${dev.name}`)
+                let format = v4l2.formatExt(format_txt);
+                dev.formats.push(format);
+            }
+            
+        }
+        this._exec(`${V4L2} --format-ext`);
 
     }
     formatExt(txt){
@@ -57,7 +91,7 @@ class V4l2{
      * parse device all device info
      * @param {*} txt 
      */
-    listDevice(txt){
+    listUSB(txt){
         let lines = txt.split('\n');
         let devices = [];
         let cur ;

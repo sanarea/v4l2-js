@@ -7,6 +7,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "GETINFO",
+            "cwd":"${workspaceFolder}",
+            "runtimeExecutable": "~/.nvm/versions/node/v10.15.3/bin/node",
+            "program": "${workspaceFolder}/test/parse2.js",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch Program",
             "cwd":"${workspaceFolder}",
             "runtimeExecutable": "~/.nvm/versions/node/v10.15.3/bin/node",

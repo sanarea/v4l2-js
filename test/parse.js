@@ -21,5 +21,5 @@ let v4l2 = new V4l2();
             dev.formats.push(x);
         }
     }
-    console.log(devices);
+    
 })();

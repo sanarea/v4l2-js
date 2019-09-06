@@ -5,7 +5,11 @@ class DEV{
 
     }
 }
-
+const LIST_DEVICE = "--list-devices";
+const LIST_FORMAT = "--list-formats-ext";
+const LIST_MENU   = "--listctrls-munus";
+const GET_CTRL    = "-C";
+const SET_CTRL    = "-c";
 /**
  * [
  *  {name:name
@@ -28,6 +32,14 @@ class V4l2{
         // console.log(r.toString());
         return  r.toString();
     }
+    getMenus(deviceId){
+        let txt = this._exec(`${V4L2} -d ${deviceId} ${LIST_MENU}`);
+        let txts = txt.split('\n');
+        for(let i=0;i<txts.length;i++){
+            let line = txts[i];
+            line.split('0x');
+        }
+    }
     getinfo(){
         let usb_txt = this._exec(`${V4L2} --list-devices`);
         let usbs = this.listUSB(usb_txt);
@@ -36,13 +48,12 @@ class V4l2{
             for(let j=0;j<usb.devices.length;j++){
                 let dev = usb.devices[j];
                 let format_txt= this._exec(`${V4L2} --list-formats-ext -d ${dev.name}`);
-                console.log(dev.name,format_txt);
-                let format = this.formatExt(format_txt);
-                dev.formats.push(format);
+                let formats = this.formatExt(format_txt);
+                dev.formats.push(formats);
             }
             
         }
-        console.log(usbs);
+        
         return usbs;
 
     }
@@ -109,7 +120,7 @@ class V4l2{
                 dev.name = line.substr(0,line.length-1);
                 dev.devices = [];
                 devices.push(dev);
-                dev.formats = {};
+               
                 cur = dev;
                 continue;
             }

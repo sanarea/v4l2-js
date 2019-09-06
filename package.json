@@ -1,12 +1,12 @@
 {
   "name": "v4l2",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "v4l2-ctl command parser",
+  "main": "v4l2.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "test/parse2.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "yangchigi@yangchigi.com",
+  "license": "MIT"
     
 }

@@ -230,4 +230,4 @@ class V4l2 {
     }
 }
 
-module.exports = V4l2
+module.exports = new V4l2()

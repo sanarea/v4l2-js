@@ -1,4 +1,4 @@
-var exec = require('child_process').execSync;
+const  exec = require('child_process').execSync;
 class DEV {
     constructor() {
         this.formats = [];
@@ -27,68 +27,68 @@ const V4L2_CMD = "v4l2-ctl";
 
 
 class Device {
-    
-    constructor(){
+
+    constructor() {
         this.name = null;
         this.menus = [];
         this.formats = [];
     }
 }
 class USB {
-    constructor(){
-        this.name =null;
+    constructor() {
+        this.name = null;
         this.devices = [];
     }
 }
 
 class V4L2 {
     _exec(cmd) {
-        try{ 
-        let r = exec(cmd);
-        // console.log(r.toString());
-        return r.toString();
-        }catch(e){
-            console.log(`${cmd} error` , e);
+        try {
+            let r = exec(cmd);
+            // console.log(r.toString());
+            return r.toString();
+        } catch (e) {
+            console.log(`${cmd} error`, e);
         }
     }
 
-    setCtrl(deviceId,ctrlName, value){
+    setCtrl(deviceId, ctrlName, value) {
         let result = this._exec(`${V4L2_CMD} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
-        if(result){
-            return {result:false, message:result};
+        if (result) {
+            return { result: false, message: result };
         }
         else
-            return {result:true};
+            return { result: true };
     }
-    getCtrl(deviceId,ctrName){
+    getCtrl(deviceId, ctrName) {
         let result = this._exec(`${V4L2_CMD} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
-        let vals =result.split(':');
-        if(vals.length>1){
+        let vals = result.split(':');
+        if (vals.length > 1) {
             return vals[1].trim();
-        }else
+        } else
             throw new Error(result);
     }
     getMenus(deviceId) {
         let txt = this._exec(`${V4L2_CMD} -d ${deviceId} ${LIST_MENU}`);
-      
+
         let txts = txt.split('\n');
-        
+
         let cur;
         let ctrls = [];
         let isMenu = false;
         for (let i = 0; i < txts.length; i++) {
             let line = txts[i];
-            if(line.trim().length<1){
+            if (line.trim().length < 1) {
                 continue;
             }
             let menu_type = line.match(/\(.*\)/gi);
 
             if (menu_type == null || menu_type.length < 1) {
-                let m =line.trim().split(':');
-         
-                let menu = {key:m[0].trim() ,value:m[1].trim()};
-                if(cur){
-           
+                let m = line.trim().split(':');
+
+                let menu = { key: m[0].trim(), value: m[1].trim() };
+                if (cur) {
+
                     cur.menus.push(menu);
                 }
                 continue;
@@ -97,7 +97,7 @@ class V4L2 {
             let tmp = line.split(/\(.*?\).*?\:/);
             let names = tmp[0].trim().split(' ');
             let values = tmp[1].trim().split(' ');
-            
+
             ctrl.type = menu_type[0].substr(1, menu_type[0].length - 2);
             ctrl.name = names[0];
             ctrl.cmd = names[1];
@@ -128,14 +128,11 @@ class V4L2 {
                 }
 
             }
-            if(ctrl.type=='menu'){
+            if (ctrl.type == 'menu') {
                 ctrl.menus = [];
             }
             cur = ctrl;
             ctrls.push(ctrl);
-
-        
-
         }
         return ctrls;
     }

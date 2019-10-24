@@ -2,7 +2,7 @@
   "name": "v4l2",
   "version": "1.0.0",
   "description": "v4l2-ctl command parser",
-  "main": "v4l2.js",
+  "main": "index.js",
   "scripts": {
     "test": "test/parse2.js"
   },

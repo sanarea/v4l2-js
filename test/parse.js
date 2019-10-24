@@ -1,7 +1,4 @@
 
-let fs = require("fs");
-let path = require("path");
-
 let v4l2 = require("../v4l2");
 
 (() => {

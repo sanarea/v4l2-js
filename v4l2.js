@@ -43,9 +43,13 @@ class USB {
 
 class V4L2 {
     _exec(cmd) {
+        try{ 
         let r = exec(cmd);
         // console.log(r.toString());
         return r.toString();
+        }catch(e){
+            console.log(`${cmd} error` , e);
+        }
     }
 
     setCtrl(deviceId,ctrlName, value){
@@ -57,7 +61,7 @@ class V4L2 {
             return {result:true};
     }
     getCtrl(deviceId,ctrName){
-        let result = this._exec(`${V4L2} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
+        let result = this._exec(`${V4L2_CMD} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
         let vals =result.split(':');
         if(vals.length>1){
             return vals[1].trim();
@@ -65,7 +69,7 @@ class V4L2 {
             throw new Error(result);
     }
     getMenus(deviceId) {
-        let txt = this._exec(`${V4L2} -d ${deviceId} ${LIST_MENU}`);
+        let txt = this._exec(`${V4L2_CMD} -d ${deviceId} ${LIST_MENU}`);
       
         let txts = txt.split('\n');
         
@@ -136,13 +140,13 @@ class V4L2 {
         return ctrls;
     }
     getinfo() {
-        let usb_txt = this._exec(`${V4L2} --list-devices`);
+        let usb_txt = this._exec(`${V4L2_CMD} --list-devices`);
         let usbs = this.listUSB(usb_txt);
         for (let i = 0; i < usbs.length; i++) {
             let usb = usbs[i];
             for (let j = 0; j < usb.devices.length; j++) {
                 let dev = usb.devices[j];
-                let format_txt = this._exec(`${V4L2} --list-formats-ext -d ${dev.name}`);
+                let format_txt = this._exec(`${V4L2_CMD} --list-formats-ext -d ${dev.name}`);
                 let formats = this.formatExt(format_txt);
                 dev.formats.push(formats);
             }

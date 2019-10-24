@@ -10,6 +10,7 @@ const LIST_FORMAT = "--list-formats-ext";
 const LIST_MENU = "--list-ctrls-menus";
 const GET_CTRL = "-C";
 const SET_CTRL = "-c";
+const V4L2_CMD = "v4l2-ctl";
 /**
  * [
  *  {name:name
@@ -39,8 +40,8 @@ class USB {
         this.devices = [];
     }
 }
-const V4L2 = "v4l2-ctl";
-class V4l2 {
+
+class V4L2 {
     _exec(cmd) {
         let r = exec(cmd);
         // console.log(r.toString());
@@ -48,7 +49,7 @@ class V4l2 {
     }
 
     setCtrl(deviceId,ctrlName, value){
-        let result = this._exec(`${V4L2} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
+        let result = this._exec(`${V4L2_CMD} ${SET_CTRL} ${ctrName}:${value} -d ${deviceId}`);
         if(result){
             return {result:false, message:result};
         }
@@ -230,4 +231,4 @@ class V4l2 {
     }
 }
 
-module.exports = new V4l2()
+module.exports = new V4L2()
